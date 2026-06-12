@@ -1,0 +1,78 @@
+﻿<Application x:Class="CabanaOSDemo.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="Views/EmployeeLoginWindow.xaml">
+    <Application.Resources>
+
+        <!-- ================================================================= -->
+        <!-- TYPOGRAPHY SYSTEM DEFINITIONS                                     -->
+        <!-- ================================================================= -->
+        <!-- Points precisely to your newly created Assets/Fonts directory -->
+        <FontFamily x:Key="PrimaryHeadingFont">pack://application:,,,/Assets/Fonts/#Paytone One</FontFamily>
+        <FontFamily x:Key="SecondaryBodyFont">pack://application:,,,/Assets/Fonts/#Peddana</FontFamily>
+
+        <!-- ================================================================= -->
+        <!-- GLOBAL CABANAOS THEME BRUSHES                                     -->
+        <!-- ================================================================= -->
+        <SolidColorBrush x:Key="NavyBackgroundBrush" Color="#121826"/>
+        <SolidColorBrush x:Key="WorkspaceLightBrush" Color="#EAF6F0"/>
+        <SolidColorBrush x:Key="WhiteCardBrush" Color="#FFFFFF"/>
+
+        <!-- Functional Tier & Seating Palette Codes -->
+        <SolidColorBrush x:Key="MintGreenBrush" Color="#10F261"/>
+        <SolidColorBrush x:Key="LightMintBrush" Color="#BFFCC6"/>
+        <SolidColorBrush x:Key="SuperiorBlueBrush" Color="#13E9D0"/>
+        <SolidColorBrush x:Key="DeluxeCreamBrush" Color="#FFE59E"/>
+
+        <!-- Structural UI Elements -->
+        <SolidColorBrush x:Key="ButtonNavyBrush" Color="#1E2638"/>
+        <SolidColorBrush x:Key="LabelGreyBrush" Color="#DCE5E0"/>
+        <SolidColorBrush x:Key="SoftPlaceholderBrush" Color="#A0AEC0"/>
+
+        <!-- ================================================================= -->
+        <!-- CORE PILL FIELD STYLES                                            -->
+        <!-- ================================================================= -->
+
+        <!-- Styled Rounded Input Text Fields -->
+        <Style x:Key="CabanaPillTextBox" TargetType="TextBox">
+            <Setter Property="FontFamily" Value="{StaticResource SecondaryBodyFont}"/>
+            <Setter Property="Background" Value="#E2E8F0"/>
+            <Setter Property="Foreground" Value="#1A202C"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <!-- Styled Rounded Secure Password Fields -->
+        <Style x:Key="CabanaPillPasswordBox" TargetType="PasswordBox">
+            <Setter Property="FontFamily" Value="{StaticResource SecondaryBodyFont}"/>
+            <Setter Property="Background" Value="#E2E8F0"/>
+            <Setter Property="Foreground" Value="#1A202C"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="15">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                  VerticalAlignment="Center" 
+                                  Padding="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Application.Resources>
+</Application>
