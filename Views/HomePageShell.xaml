@@ -1,0 +1,115 @@
+﻿<Window x:Class="CabanaOSDemo.HomePageShell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CabanaOS" 
+        Height="800" 
+        Width="1200" 
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" 
+        Icon="/CabanaOSIcon.ico"
+        AllowsTransparency="True" 
+        Background="Transparent">
+
+    <Window.Resources>
+        <Style x:Key="SidebarMenuNavigationButtonTemplate" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#334155"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,0,0,0"/>
+            <Style.Resources>
+                <Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style>
+            </Style.Resources>
+        </Style>
+
+        <Style x:Key="SidebarActiveLinkHighlightButtonTemplate" TargetType="Button" BasedOn="{StaticResource SidebarMenuNavigationButtonTemplate}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Style.Resources>
+                <Style TargetType="Border"><Setter Property="CornerRadius" Value="15"/></Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#F1F5F9" CornerRadius="15" ClipToBounds="True">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="260"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" CornerRadius="15" Background="#111827" Margin="0">
+                <Grid Margin="15,40,15,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" 
+                            Background="White" 
+                            CornerRadius="16" 
+                            Padding="20,12" 
+                            HorizontalAlignment="Stretch" 
+                            Margin="0,0,0,40">
+                        <TextBlock Text="CabanaOS" 
+                                   Foreground="#111827" 
+                                   FontSize="24" 
+                                   FontWeight="Bold" 
+                                   HorizontalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                        <Button x:Name="BtnBilling" 
+                                Content="Billing" 
+                                Style="{StaticResource SidebarMenuNavigationButtonTemplate}" 
+                                Margin="0,0,0,12" 
+                                Click="SidebarMenuButton_Click"/>
+                        
+                        <Button x:Name="BtnRestaurant" 
+                                Content="Restaurant Reservations" 
+                                Style="{StaticResource SidebarMenuNavigationButtonTemplate}" 
+                                Margin="0,0,0,12" 
+                                Click="SidebarMenuButton_Click"/>
+                        
+                        <Button x:Name="BtnRooms" 
+                                Content="Rooms &amp; Accommodations" 
+                                Style="{StaticResource SidebarMenuNavigationButtonTemplate}" 
+                                Margin="0,0,0,12" 
+                                Click="SidebarMenuButton_Click"/>
+                        
+                        <Button x:Name="BtnDashboard" 
+                                Content="Management Dashboard" 
+                                Style="{StaticResource SidebarMenuNavigationButtonTemplate}"
+                                Click="SidebarMenuButton_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/> 
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,25,0">
+                    <Button Content="—" Width="28" Height="28" Background="#17EE37" Foreground="White" FontWeight="Bold" FontSize="10" Cursor="Hand" Margin="0,0,8,0" Click="MinimizeButton_Click">
+                        <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="14"/><Setter Property="BorderThickness" Value="0"/></Style></Button.Resources>
+                    </Button>
+                    <Button Content="✕" Width="28" Height="28" Background="#EF4444" Foreground="White" FontWeight="Bold" FontSize="10" Cursor="Hand" Click="CloseButton_Click">
+                        <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="14"/><Setter Property="BorderThickness" Value="0"/></Style></Button.Resources>
+                    </Button>
+                </StackPanel>
+
+                <Border x:Name="BdrWorkspaceBackground" Background="Transparent" Grid.Row="1" Margin="25,0,25,25">
+                    <ContentControl x:Name="MainViewPresenterWorkspace"/>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

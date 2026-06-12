@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="CabanaOSDemo.Views.HomePageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock Text="CabanaOS" FontFamily="{StaticResource PrimaryHeadingFont}" FontSize="110" Foreground="White" HorizontalAlignment="Center"/>
+        <TextBlock Text="Cabana &amp; Restaurant Management System" FontFamily="{StaticResource PrimaryHeadingFont}" FontSize="26" Foreground="White" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+    </StackPanel>
+</UserControl>
