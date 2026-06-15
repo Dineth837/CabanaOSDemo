@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="CabanaOSDemo.Views.CabanaSuitesSalesPieChart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="180" Height="180"
+             HorizontalAlignment="Center" 
+             VerticalAlignment="Center">
+    <Grid>
+        <TextBlock Text="Room &amp; Accommodations Sales" FontSize="12" FontWeight="Bold" Foreground="#1E293B" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+        <Viewbox Margin="0,20,0,0">
+            <Canvas Width="200" Height="200">
+
+                <Path Fill="#22C55E" Data="M100,100 L100,10 A90,90 0 0,1 185.6,127.8 Z">
+                    <Path.RenderTransform>
+                        <TranslateTransform X="4" Y="-4"/>
+                    </Path.RenderTransform>
+                </Path>
+
+                <Path Fill="#BBF7D0" Data="M100,100 L185.6,127.8 A90,90 0 0,1 72.2,185.6 Z">
+                    <Path.RenderTransform>
+                        <TranslateTransform X="4" Y="4"/>
+                    </Path.RenderTransform>
+                </Path>
+
+                <Path Fill="#06B6D4" Data="M100,100 L72.2,185.6 A90,90 0 0,1 10,100 Z">
+                    <Path.RenderTransform>
+                        <TranslateTransform X="-4" Y="4"/>
+                    </Path.RenderTransform>
+                </Path>
+
+                <Path Fill="#FDE047" Data="M100,100 L10,100 A90,90 0 0,1 100,10 Z">
+                    <Path.RenderTransform>
+                        <TranslateTransform X="-4" Y="-4"/>
+                    </Path.RenderTransform>
+                </Path>
+
+                <TextBlock x:Name="LblStandardCouple" Text="40%&#x0a;Standard&#x0a;Couple&#x0a;Suites" FontSize="8" FontWeight="Bold" Foreground="#1E293B" Canvas.Left="126" Canvas.Top="42" TextAlignment="Center"/>
+                <TextBlock x:Name="LblStandardFamily" Text="20%&#x0a;Standard&#x0a;Family Suites" FontSize="8" FontWeight="Bold" Foreground="#1E293B" Canvas.Left="106" Canvas.Top="129" TextAlignment="Center"/>
+                <TextBlock x:Name="LblSuperior" Text="15%&#x0a;Superior&#x0a;Suites" FontSize="8" FontWeight="Bold" Foreground="#1E293B" Canvas.Left="38" Canvas.Top="115" TextAlignment="Center"/>
+                <TextBlock x:Name="LblDeluxe" Text="25%&#x0a;Deluxe&#x0a;Suites" FontSize="8" FontWeight="Bold" Foreground="#1E293B" Canvas.Left="38" Canvas.Top="42" TextAlignment="Center"/>
+
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</UserControl>

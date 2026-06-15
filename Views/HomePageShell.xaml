@@ -56,7 +56,7 @@
                             CornerRadius="16" 
                             Padding="20,12" 
                             HorizontalAlignment="Stretch" 
-                            Margin="0,0,0,40">
+                            Margin="0,0,0,50">
                         <TextBlock Text="CabanaOS" 
                                    Foreground="#111827" 
                                    FontSize="24" 
@@ -66,25 +66,24 @@
 
                     <StackPanel Grid.Row="1" VerticalAlignment="Top">
                         <Button x:Name="BtnBilling" 
-                                Content="Billing" 
+                                Content="               💵 Billing" 
                                 Style="{StaticResource SidebarMenuNavigationButtonTemplate}" 
-                                Margin="0,0,0,12" 
+                                Margin="0,0,0,30" 
                                 Click="SidebarMenuButton_Click"/>
                         
                         <Button x:Name="BtnRestaurant" 
-                                Content="Restaurant Reservations" 
+                                Content="   🏩 Restaurant Reservations" 
                                 Style="{StaticResource SidebarMenuNavigationButtonTemplate}" 
-                                Margin="0,0,0,12" 
+                                Margin="0,0,0,30" 
                                 Click="SidebarMenuButton_Click"/>
                         
                         <Button x:Name="BtnRooms" 
-                                Content="Rooms &amp; Accommodations" 
+                                Content="🛎️ Rooms &amp; Accommodations" 
                                 Style="{StaticResource SidebarMenuNavigationButtonTemplate}" 
-                                Margin="0,0,0,12" 
+                                Margin="0,0,0,30" 
                                 Click="SidebarMenuButton_Click"/>
-                        
                         <Button x:Name="BtnDashboard" 
-                                Content="Management Dashboard" 
+                                Content="   📈 Management Dashboard" 
                                 Style="{StaticResource SidebarMenuNavigationButtonTemplate}"
                                 Click="SidebarMenuButton_Click"/>
                     </StackPanel>
