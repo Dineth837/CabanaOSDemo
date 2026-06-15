@@ -32,12 +32,10 @@ namespace CabanaOSDemo.Views
 
         public void ReleaseRoomRealTime(string roomNumber)
         {
-            // 1. Refresh the grid immediately
+            //  Refresh the grid immediately
             RefreshActiveRoomsMatrixGrid();
 
-            // 2. Use a "Dispatcher.Invoke" to clear the workspace. 
-            // This delay ensures the UI thread is not busy rendering the grid 
-            // when the workspace is cleared.
+            
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 DynamicFormWorkspace.Content = null;
@@ -89,7 +87,6 @@ namespace CabanaOSDemo.Views
                     TxtMiddleSuiteTitle.Text = "Superior Tier Suites";
               
                     TxtMiddleSuiteTitle.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E3A8A"));
-                    //BdrMiddleShowcaseCard.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ADC4F7"));
                     TxtMiddleSuiteDescription.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E3A8A"));
                 }
                 else if (clickedButton == BtnDeluxeTier) 
@@ -100,7 +97,6 @@ namespace CabanaOSDemo.Views
                     TxtMiddleSuiteTitle.Text = "Deluxe Tier Suites";
                  
                     TxtMiddleSuiteTitle.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78350F"));
-                    //BdrMiddleShowcaseCard.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FCE8CE"));
                     TxtMiddleSuiteDescription.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78350F"));
                 }
                 else 
@@ -111,19 +107,15 @@ namespace CabanaOSDemo.Views
                     TxtMiddleSuiteTitle.Text = "Standard Tier Suites";
                     
                     TxtMiddleSuiteTitle.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#065F46"));
-                    //BdrMiddleShowcaseCard.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#86EFAC"));
                     TxtMiddleSuiteDescription.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#065F46"));
                 }
             }
         }
 
-        // 🚀 CORRECTED POPULATION METHODS: No dictionary reliance
         public void PopulateStandardTierRooms()
         {
             RoomsGridMatrixDisplay.Children.Clear();
-            // Standard Couple (ST01 - ST06)
             for (int i = 1; i <= 6; i++) { string id = $"ST0{i}"; RoomsGridMatrixDisplay.Children.Add(CreateRoomCardUiComponent(id, "Rs. 8,500 / night", IsRoomReserved(id), "Standard")); }
-            // Standard Family (Fam ST07 - Fam ST010)
             for (int i = 7; i <= 10; i++) { string id = $"Fam ST0{i}"; RoomsGridMatrixDisplay.Children.Add(CreateRoomCardUiComponent(id, "Rs. 15,000 / night", IsRoomReserved(id), "Standard")); }
         }
 

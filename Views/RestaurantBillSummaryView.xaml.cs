@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Collections.ObjectModel; // 🚀 ADDED: Required for dynamic UI lists
+using System.Collections.ObjectModel; 
 using CabanaOSDemo.Data;
 using CabanaOSDemo.Models;
 
@@ -13,7 +13,7 @@ namespace CabanaOSDemo.Views
     {
         private readonly RestaurantReservationsView? _mainView;
 
-        // 🚀 ADDED: The dynamic list that talks directly to your XAML ItemsControl
+        //  The dynamic list that talks directly to your XAML ItemsControl
         public ObservableCollection<FoodOrderItem> CurrentOrders { get; set; }
 
         public RestaurantBillSummaryView(RestaurantReservationsView? mainView, string tableName, string zone, string guestName, string totalBill = "Rs. 00.00", string orderId = "", string sourceModule = "Reservation")
@@ -23,7 +23,7 @@ namespace CabanaOSDemo.Views
 
             BtnReleaseTable.Click += BtnReleaseAction_Click;
 
-            // --- 1. ALWAYS DO THIS: Setup Data and Text Fields ---
+            //  ALWAYS DO THIS: Setup Data and Text Fields 
             // (This needs to run for both Billing AND Reservation sections!)
             CurrentOrders = new ObservableCollection<FoodOrderItem>();
             FoodOrdersList.ItemsSource = CurrentOrders;
@@ -34,14 +34,14 @@ namespace CabanaOSDemo.Views
             TxtFooterSubtitle.Text = $"{zone} Zone Table Occupied";
             TxtTotalStatementBill.Text = totalBill ?? "Rs. 00.00";
 
-            // --- 2. CONTEXT AWARE ROUTING ENGINE ---
-            // 1. Declare routing variables strictly
+            //  CONTEXT AWARE ROUTING ENGINE
+            //  Declare routing variables strictly
             bool isBillingSection;
 
-            // 2. Assign routing values strictly
+            //  Assign routing values strictly
             isBillingSection = (sourceModule == "Billing");
 
-            // 3. Execution Guard
+            //  Execution Guard
             if (isBillingSection)
             {
                 // Triggers your exact logic tree for the Billing Section
@@ -88,13 +88,13 @@ namespace CabanaOSDemo.Views
 
         private void ApplyBillingStyle(string currentOrderId)
         {
-            // 0. Safety Guard to prevent crashes if a blank row is clicked
+            //  Safety Guard to prevent crashes if a blank row is clicked
             if (string.IsNullOrEmpty(currentOrderId))
             {
                 return;
             }
 
-            // 1. Declare all variables strictly first
+            // Declare all variables strictly first
             System.Windows.Media.BrushConverter colorTool;
             System.Windows.Media.SolidColorBrush stForeground;
             System.Windows.Media.SolidColorBrush stBackground;
@@ -106,7 +106,7 @@ namespace CabanaOSDemo.Views
             bool isDeluxeZone;
             string billingTitle;
 
-            // 2. Assign values strictly in separate steps (using '!' to prevent null warnings)
+            // Assign values strictly in separate steps (using '!' to prevent null warnings)
             colorTool = new System.Windows.Media.BrushConverter();
 
             // Standard Colors (#14532D and #BBF7D0)
@@ -124,7 +124,7 @@ namespace CabanaOSDemo.Views
             isStandardZone = currentOrderId.StartsWith("STCZ") || currentOrderId.StartsWith("STFZ");
             isDeluxeZone = currentOrderId.StartsWith("DLXCZ") || currentOrderId.StartsWith("DLXFZ");
 
-            // 3. Apply standard billing section overrides
+            // Apply standard billing section overrides
             txtHead.Text = billingTitle;
             BtnSettleBill.Visibility = visibleState;
             BtnReleaseTable.Visibility = visibleState;
@@ -157,7 +157,7 @@ namespace CabanaOSDemo.Views
             ExecuteGlobalTableRelease();
         }
 
-        // 🚀 THE FIXED LIVE SYNC SETTLE RESTAURANT BILL ENGINE
+        // THE FIXED LIVE SYNC SETTLE RESTAURANT BILL ENGINE
         private void BtnSettleBill_Click(object sender, RoutedEventArgs e)
         {
             string targetTable = TxtTableNumber.Text;

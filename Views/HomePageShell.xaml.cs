@@ -25,7 +25,7 @@ namespace CabanaOSDemo
             BdrWorkspaceBackground.Background = Brushes.Transparent;
         }
 
-        // 🚀 ADD THIS METHOD HERE TO FIX THE ERROR
+        //  ADD THIS METHOD HERE TO FIX THE ERROR
         public RoomsAccommodationsView GetPersistentRoomsView()
         {
             return _roomsView;
@@ -44,7 +44,7 @@ namespace CabanaOSDemo
                 // Highlight clicked button
                 clickedButton.Style = (Style)this.FindResource("SidebarActiveLinkHighlightButtonTemplate");
 
-                // 🔄 THE FIX: Swap the cached instances instead of using 'new'
+                // THE FIX: Swap the cached instances instead of using 'new'
                 if (clickedButton == BtnRooms)
                 {
                     // Swaps to the pre-existing instance holding your live dictionary states!
@@ -80,7 +80,7 @@ namespace CabanaOSDemo
             Application.Current.Shutdown();
         }
 
-        // 🚀 ADD THIS HOOK METHOD INSIDE HomePageShell CLASS TO RESOLVE RESTAURANT GRID INTERACTION SYNC
+        // ADD THIS HOOK METHOD INSIDE HomePageShell CLASS TO RESOLVE RESTAURANT GRID INTERACTION SYNC
         public Views.RestaurantReservationsView GetPersistentRestaurantView()
         {
             return _restaurantView;

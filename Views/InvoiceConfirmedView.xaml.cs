@@ -29,14 +29,14 @@ namespace CabanaOSDemo.Views
         {
             if (tier == "Superior")
             {
-                // Matches layout: whenConfirmedSuperiorCoupleSuite.png
+                
 
                 TxtSuiteBookedLabel.Text = "Superior Suite Booked";
                 TxtInvoiceCategory.Text = "Superior Suite";
                 TxtAccommodationCharge.Text = "Rs. 12,500.00";
                 TxtTotalStatementDue.Text = "Rs. 12,500.00";
 
-                // Soft Blue Theme Tints
+                
                 SolidColorBrush supBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E8F0FE"));
                 SolidColorBrush supButtonBg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ADC4F7"));
                 SolidColorBrush supButtonFg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E3A8A"));
@@ -62,13 +62,12 @@ namespace CabanaOSDemo.Views
             }
             else if (tier == "Deluxe")
             {
-                // Matches layout: whenConfirmedDeluxeCoupleSuite.png
                 TxtSuiteBookedLabel.Text = "Deluxe Suite Booked";
                 TxtInvoiceCategory.Text = "Deluxe Suite";
                 TxtAccommodationCharge.Text = "Rs. 20,000.00";
                 TxtTotalStatementDue.Text = "Rs. 20,000.00";
 
-                // Premium Warm Beige Theme Tints
+                
                 SolidColorBrush dlxBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF4E8"));
                 SolidColorBrush dlxButtonBg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FCE8CE"));
                 SolidColorBrush dlxButtonFg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78350F"));
@@ -92,14 +91,13 @@ namespace CabanaOSDemo.Views
                 TxtInvoiceTitle.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78350F"));
                 TxtTotalStatementDue.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78350F"));
             }
-            else // Standard Fallback Default Mode
+            else 
             {
                 TxtSuiteBookedLabel.Text = "Standard Suite Booked";
                 TxtInvoiceCategory.Text = "Standard Suite";
                 TxtAccommodationCharge.Text = "Rs. 8,500.00";
                 TxtTotalStatementDue.Text = "Rs. 8,500.00";
 
-                // Original Green Accent Styles
                 SolidColorBrush stdBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F0FDF4"));
                 SolidColorBrush stdButtonBg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#A7F3D0"));
                 SolidColorBrush stdButtonFg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#065F46"));
@@ -124,7 +122,7 @@ namespace CabanaOSDemo.Views
             }
         }
 
-        // 🚀 FIX 2: Added the missing click handler your XAML action button is searching for!
+        //  Added the missing click handler your XAML action button is searching for
         private void BtnSettleDue_Click(object sender, RoutedEventArgs e)
         {
             string targetRoom = _roomNumber;
@@ -149,14 +147,14 @@ namespace CabanaOSDemo.Views
                             "POS Terminal Checkout Counter", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        // 2. RELEASE ROOM: Mirroring Restaurant "ReleaseTableAction"
+        //  RELEASE ROOM: Mirroring Restaurant "ReleaseTableAction"
         private void BtnReleaseRoom_Click(object sender, RoutedEventArgs e)
         {
             ExecuteGlobalRoomRelease();
             MessageBox.Show($"Room {_roomNumber} returned to vacant pool.", "System Success");
         }
 
-        // 3. THE FIXED SYNC ENGINE: Matches your Restaurant "ExecuteGlobalTableRelease"
+        //  THE FIXED SYNC ENGINE: Matches your Restaurant "ExecuteGlobalTableRelease"
         private void ExecuteGlobalRoomRelease()
         {
             // Update repository
