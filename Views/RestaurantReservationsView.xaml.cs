@@ -174,7 +174,7 @@ namespace CabanaOSDemo.Views
 
         private Button CreateGeometricTableComponent(string name, string seating, bool isOccupied, bool isCircle, string zone)
         {
-            // 1. DECLARE STRICTLY
+            //  DECLARE STRICTLY
             string bgHex;
             string borderHex;
             Thickness buttonMargin;
@@ -191,7 +191,7 @@ namespace CabanaOSDemo.Views
             Action confirmReservationCallback;
             RestaurantBillSummaryView occupiedSummary;
 
-            // 2. ASSIGN SEPARATELY
+            //  ASSIGN SEPARATELY
             bgHex = zone == "Deluxe" ? "#FFF4E8" : "#F0FDF4";
             borderHex = zone == "Deluxe" ? "#FCE8CE" : "#22C55E";
 
@@ -268,7 +268,7 @@ namespace CabanaOSDemo.Views
                 this.currentActiveZone = zone;
                 string tableType = isCircle ? "Couple (2 Seats)" : "Family (6 Seats)";
 
-                // 🚀 FIXED: The reservation is completely free!
+                //  The reservation is completely free!
                 string priceLabel = "Rs. 0.00";
 
                 if (isOccupied)
@@ -280,7 +280,7 @@ namespace CabanaOSDemo.Views
                 {
                     confirmReservationCallback = () =>
                     {
-                        // 1. DECLARE STRICTLY FOR CALLBACK
+                        // DECLARE STRICTLY FOR CALLBACK
                         FormTableBookingView activeForm;
                         string leadName;
                         string leadNic;
@@ -319,7 +319,7 @@ namespace CabanaOSDemo.Views
                                 }
                             }
 
-                            // 🚀 PREVENT DUPLICATES: Search list for an existing active record first
+                            //  PREVENT DUPLICATES: Search list for an existing active record first
                             existingRecord = BillingRepository.RestaurantInvoices.FirstOrDefault(r => r.TableNumber == name && (r.States == "Occupied" || r.States == "Ongoing"));
 
                             if (existingRecord != null)

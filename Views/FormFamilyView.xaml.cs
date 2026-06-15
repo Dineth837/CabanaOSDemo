@@ -13,7 +13,7 @@ namespace CabanaOSDemo.Views
     {
         private readonly Action _onConfirmedCallback;
 
-        // Overloaded constructor accepting cross-talk data from rooms grid layout views
+        // Overloaded constructor accepting cross talk data from rooms grid layout views
         public FormFamilyView(Action onConfirmedCallback, string roomNumber, string tier)
         {
             InitializeComponent();
@@ -51,7 +51,7 @@ namespace CabanaOSDemo.Views
 
         private void BtnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Declare variables
+            //  Declare variables
             string roomNumStr;
             string leadGuestName;
             string leadGuestNic;
@@ -59,13 +59,13 @@ namespace CabanaOSDemo.Views
             string parsedTier;
             string generatedId;
 
-            // 2. Assign initial values from UI
+            //  Assign initial values from UI
             roomNumStr = TxtRoomNumberDisplayBox.Text.Trim();
             leadGuestName = txtLeadGuestName.Text.Trim();
             leadGuestNic = txtLeadGuestNIC.Text.Trim();
             guestCount = txtGuestCount.Text.Trim();
 
-            // 3. Validation Guards
+            //  Validation Guards
             if (!ValidationHelper.IsValidName(leadGuestName))
             {
                 MessageBox.Show("Validation Failure: Guest Name must only contain letters and spaces.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -79,7 +79,7 @@ namespace CabanaOSDemo.Views
                 return;
             }
 
-            // 4. Determine Tier
+            //  Determine Tier
             parsedTier = "Standard";
             if (TxtRoomPackageTitle.Text.Contains("Superior"))
             {
@@ -95,10 +95,10 @@ namespace CabanaOSDemo.Views
             string leadCusID = IdGenerator.GenerateCustomerID(leadNic);
             BillingRepository.EnsureCustomerRegistered(leadName, leadNic, "Family", leadCusID);
 
-            // 5. Generate ID
+            //  Generate ID
             string bookingID = IdGenerator.GenerateSuiteBookingID(parsedTier, "Family", leadGuestNic);
 
-            // 6. Instantiate and manually assign billing record properties in separate steps
+            //  Instantiate and manually assign billing record properties in separate steps
             RoomBillingRecord newRecord = new RoomBillingRecord();
             newRecord.RoomNumber = roomNumStr;
             newRecord.CustomerName = leadGuestName;
@@ -108,7 +108,7 @@ namespace CabanaOSDemo.Views
             newRecord.TotalDue = TxtCostPerNight.Text;
             newRecord.BookingID = bookingID;
 
-            // 7. Save to C# Memory Repository
+            //  Save to C# Memory Repository
             BillingRepository.RoomInvoices.Add(newRecord);
 
             var currentSuite = BillingRepository.MasterSuites.FirstOrDefault(s => s != null && s.RoomID == roomNumStr);
@@ -117,10 +117,10 @@ namespace CabanaOSDemo.Views
                 currentSuite.States = "CheckedIn";
             }
 
-            // 8. Commit C# Memory to Database/Files
+            //  Commit C# Memory to Database/Files
             BillingRepository.SaveAllDataToFiles();
 
-            // 9. Success State
+            
             MessageBox.Show($"Family Reservation Successful!\n\nBooking ID: {bookingID}", "System Confirmation", MessageBoxButton.OK, MessageBoxImage.Information);
 
             _onConfirmedCallback?.Invoke();
