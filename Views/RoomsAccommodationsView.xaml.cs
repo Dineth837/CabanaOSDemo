@@ -22,7 +22,7 @@ namespace CabanaOSDemo.Views
           
         }
 
-        // THE NEW SOURCE OF TRUTH: Direct lookup to database/memory
+        
         // This removes the need for the dangerous RoomStatusTracker dictionary
         private bool IsRoomReserved(string roomId)
         {
