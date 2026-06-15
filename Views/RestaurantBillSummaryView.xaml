@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="CabanaOSDemo.Views.RestaurantBillSummaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <StackPanel Margin="10,0,10,0">
+        <TextBlock x:Name="txtHead"  Text="🛎️ Reservation &amp; Billing" FontSize="22" FontWeight="Bold" Foreground="#F0FDF4" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+
+        <Border x:Name="BdrMainStatusCard" Background="#F0FDF4" CornerRadius="12" Padding="15,12" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="Active Occupant Status" FontSize="13" FontWeight="Bold" Foreground="#1E293B"/>
+                <TextBlock x:Name="TxtCustomerName" Text="Customer Name" FontSize="14" FontWeight="Bold" Foreground="#64748B" Margin="0,4,0,2"/>
+                <TextBlock x:Name="TxtFooterSubtitle" Text="Standard Zone Couple Table Booked" FontSize="9" Foreground="#94A3B8"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Margin="0,0,0,25">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border x:Name="BdrTableNumCard" Grid.Column="0" Background="#F0FDF4" CornerRadius="10" Padding="15,12" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="Table Number" FontSize="13" FontWeight="Bold" Foreground="#1E293B"/>
+                    <TextBlock x:Name="TxtTableNumber" Text="ST C01" FontSize="14" FontWeight="Bold" Foreground="#475569" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="BdrCategoryCard" Grid.Column="1" Background="#F0FDF4" CornerRadius="10" Padding="15,12" Margin="8,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Category" FontSize="13" FontWeight="Bold" Foreground="#1E293B"/>
+                    <TextBlock x:Name="TxtCategoryName" Text="Standard Zone" FontSize="12" FontWeight="Bold" Foreground="#64748B" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border x:Name="BdrBillSummaryCard" Background="#F0FDF4" CornerRadius="12" Padding="18,15" Margin="0,0,0,30">
+            <StackPanel>
+                <TextBlock Text="Table Bill Summary" FontSize="14" FontWeight="Bold" Foreground="#1E293B" Margin="0,0,0,12"/>
+
+                <ItemsControl x:Name="FoodOrdersList" Margin="0,0,0,15">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="{Binding ItemName}" FontSize="10" Foreground="#64748B" HorizontalAlignment="Left"/>
+
+                                <TextBlock Text="{Binding ItemPrice}" FontSize="10" Foreground="#64748B" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Separator Background="#E2E8F0" Margin="0,0,0,12"/>
+
+                <Grid>
+                    <TextBlock Text="Total Statement Bill" FontSize="12" FontWeight="Bold" Foreground="#1E293B"/>
+                    <TextBlock x:Name="TxtTotalStatementBill" Text="Rs. 00 . 00" FontSize="13" FontWeight="Bold" Foreground="#1E293B" HorizontalAlignment="Right"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="BtnSettleBill" 
+                Content="Settle Cash Bill" 
+                Click="BtnSettleBill_Click" 
+                Grid.Column="0" 
+                Height="40" 
+                Background="#A7F3D0" 
+	            Foreground="#065F46"
+                BorderThickness="0"
+                FontWeight="Bold" 
+                FontSize="11" 
+                Cursor="Hand">  
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button x:Name="BtnReleaseTable" 
+                Content="Release table" 
+                Grid.Column="1" 
+                Height="40" 
+                Margin="8,0,0,0"
+                Background="#FCA5A5" 
+	            Foreground="#991B1B"
+                BorderThickness="0" 
+                FontWeight="Bold" 
+                FontSize="11" 
+                Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Grid>
+    </StackPanel>
+</UserControl>
