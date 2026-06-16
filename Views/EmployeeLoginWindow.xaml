@@ -1,0 +1,95 @@
+﻿<Window x:Class="CabanaOSDemo.Views.EmployeeLoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CabanaOS - Gate Authentication" 
+        Height="550" 
+        Width="550"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent" ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Border CornerRadius="20" Background="{StaticResource NavyBackgroundBrush}">
+        <Grid Margin="40,20,40,40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1.2*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="─" 
+                        Click="OnMinimizeClick"
+                        Background="Transparent" 
+                        Foreground="{StaticResource LabelGreyBrush}" 
+                        FontWeight="Bold"
+                        FontSize="14"
+                        Width="30" 
+                        Height="30"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Margin="0,0,5,0"/>
+
+                <Button Content="✕" 
+                        Click="OnCloseClick"
+                        Background="Transparent" 
+                        Foreground="{StaticResource LabelGreyBrush}" 
+                        FontWeight="Bold"
+                        FontSize="14"
+                        Width="30" 
+                        Height="30"
+                        BorderThickness="0"
+                        Cursor="Hand"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="1" 
+                       Text="CabanaOS" 
+                       FontFamily="{StaticResource PrimaryHeadingFont}" 
+                       FontSize="48" 
+                       Foreground="White" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Bottom"/>
+
+            <StackPanel Grid.Row="3" Width="320" VerticalAlignment="Center">
+                <TextBlock Text="User Name" 
+                           FontFamily="{StaticResource PrimaryHeadingFont}" 
+                           FontSize="14" 
+                           Foreground="{StaticResource LabelGreyBrush}" 
+                           Margin="0,0,0,8"/>
+                <TextBox x:Name="TxtUsername" 
+                         Style="{StaticResource CabanaPillTextBox}" 
+                         Margin="0,0,0,20"
+                         TextChanged="TxtUsername_TextChanged"/>
+
+                <TextBlock Text="Password" 
+                           FontFamily="{StaticResource PrimaryHeadingFont}" 
+                           FontSize="14" 
+                           Foreground="{StaticResource LabelGreyBrush}" 
+                           Margin="0,0,0,8"/>
+                <PasswordBox x:Name="TxtPassword" 
+                             Style="{StaticResource CabanaPillPasswordBox}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" VerticalAlignment="Top" Margin="0,15,0,0">
+                <Button Content="Log" 
+                        Click="OnLoginClick"
+                        Background="{StaticResource ButtonNavyBrush}" 
+                        Foreground="White" 
+                        FontFamily="{StaticResource PrimaryHeadingFont}"
+                        FontSize="18"
+                        Width="120" 
+                        Height="45"
+                        IsDefault="True">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="15"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</Window>
