@@ -10,10 +10,10 @@ namespace CabanaOSDemo.Views
 {
     public partial class FormTableBookingView : UserControl
     {
-        // 🚀 FIX 1: Declare the action delegate field here so all methods can access it!
+        //  Declare the action delegate field here so all methods can access it
         private readonly Action _onConfirmedCallback;
 
-        // 🚀 FIX 2: Update your constructor signature to accept the incoming Action parameter
+        //  Update constructor signature to accept the incoming Action parameter
         public FormTableBookingView(Action onConfirmedCallback, string tableName, string zone, string type)
         {
             InitializeComponent();
@@ -67,7 +67,7 @@ namespace CabanaOSDemo.Views
 
         private void BtnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Declare all variables first
+            //  Declare all variables first
             string tableNumStr;
             string leadGuestName;
             string leadGuestNic;
@@ -77,7 +77,7 @@ namespace CabanaOSDemo.Views
             string generatedId;
             RestaurantBillingRecord newRecord; // Note: Adjust class name if yours is slightly different
 
-            // 2. Assign values from UI in separate steps
+            //  Assign values from UI in separate steps
             // Removing the " Zone" suffix if it was added in the constructor
             tableNumStr = TxtTableNumberLabel.Text.Trim();
             tableZone = TxtZoneLabel.Text.Replace(" Zone", "").Trim();
@@ -87,7 +87,7 @@ namespace CabanaOSDemo.Views
             leadGuestNic = TxtLeadGuestNIC.Text.Trim();
             guestCountStr = TxtTotalGuestInput.Text.Trim();
 
-            // 3. Validation Guards for Lead Guest
+            //  Validation Guards for Lead Guest
             if (!ValidationHelper.IsValidName(leadGuestName))
             {
                 MessageBox.Show("Validation Failure: Guest Name can only contain alphabet letters and spaces.", "Input Gate Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -102,7 +102,7 @@ namespace CabanaOSDemo.Views
                 return;
             }
 
-            // 4. Validation Guard for Family Table Guest Count
+            //  Validation Guard for Family Table Guest Count
             if (tableType.Contains("Family"))
             {
                 if (string.IsNullOrWhiteSpace(guestCountStr))
@@ -118,7 +118,7 @@ namespace CabanaOSDemo.Views
 
             BillingRepository.EnsureCustomerRegistered(leadGuestName, leadGuestNic, "Table", leadCusID);
 
-            // 6. Instantiate and manually assign billing record properties one by one
+            //  Instantiate and manually assign billing record properties one by one
             newRecord = new RestaurantBillingRecord();
             newRecord.OrderID = reservationID;
             newRecord.TableNumber = tableNumStr;
@@ -127,7 +127,7 @@ namespace CabanaOSDemo.Views
             newRecord.States = "Occupied";
             newRecord.TotalBill = "0.00"; // Starts at 0 until they order food
 
-            // 7. Save to memory and update state
+            //  Save to memory and update state
             BillingRepository.RestaurantInvoices.Add(newRecord);
 
             var currentTable = BillingRepository.MasterTables.FirstOrDefault(t => t != null && t.TableID == tableNumStr);
@@ -136,13 +136,13 @@ namespace CabanaOSDemo.Views
                 currentTable.States = "Occupied";
             }
 
-            // 8. Persist to files
+            //  Persist to files
             BillingRepository.SaveAllDataToFiles();
 
-            // 9. Success State
+            //  Success State
             MessageBox.Show($"Table Reservation Processed Successfully!\n\nOrder ID: {reservationID}", "Terminal Receipt", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            // 10. Execute Callback (using the traditional null check approach you established)
+            // Execute Callback (using the traditional null check approach you established)
             if (_onConfirmedCallback != null)
             {
                 _onConfirmedCallback.Invoke();

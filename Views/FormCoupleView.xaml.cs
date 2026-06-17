@@ -73,7 +73,7 @@ namespace CabanaOSDemo.Views
 
         private void BtnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Declare all variables first
+            //  Declare all variables first
             string roomNumStr;
             string leadGuestName;
             string leadGuestNic;
@@ -82,14 +82,14 @@ namespace CabanaOSDemo.Views
             string parsedTier;
             
 
-            // 2. Assign values from UI in separate steps
+            //  Assign values from UI in separate steps
             roomNumStr = TxtRoomNumberDisplayBox.Text.Trim();
             leadGuestName = txtLeadGuestName.Text.Trim();
             leadGuestNic = txtLeadGuestNIC.Text.Trim();
             companionGuestName = txtCompanionGuestName.Text.Trim();
             companionGuestNic = txtCompanionGuestNIC.Text.Trim();
 
-            // 3. Validation Guards for Lead Guest
+            //  Validation Guards for Lead Guest
             if (!ValidationHelper.IsValidName(leadGuestName))
             {
                 MessageBox.Show("Validation Failure: Guest Name can only contain alphabet letters and spaces.", "Input Gate Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -104,7 +104,7 @@ namespace CabanaOSDemo.Views
                 return;
             }
 
-            // 4. Validation Guards for Companion Guest
+            // Validation Guards for Companion Guest
             if (!ValidationHelper.IsValidName(companionGuestName))
             {
                 MessageBox.Show("Validation Failure: Guest Name can only contain alphabet letters and spaces.", "Input Gate Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -119,7 +119,7 @@ namespace CabanaOSDemo.Views
                 return;
             }
 
-            // 5. Determine Tier
+            // Determine Tier
             parsedTier = "Standard";
             if (TxtRoomPackageTitle.Text.Contains("Superior"))
             {
@@ -155,7 +155,7 @@ namespace CabanaOSDemo.Views
             newRecord.TotalDue = TxtCostPerNight.Text;
             newRecord.BookingID = bookingID;
 
-            // 8. Save to memory and update state
+            //  Save to memory and update state
             BillingRepository.RoomInvoices.Add(newRecord);
 
             var currentSuite = BillingRepository.MasterSuites.FirstOrDefault(s => s != null && s.RoomID == roomNumStr);
@@ -164,10 +164,10 @@ namespace CabanaOSDemo.Views
                 currentSuite.States = "CheckedIn";
             }
 
-            // 9. Persist to files
+            //  Persist to files
             BillingRepository.SaveAllDataToFiles();
 
-            // 10. Success State
+            //  Success State
             MessageBox.Show($"Reservation Processed Successfully!\n\nBooking ID: {bookingID}", "Terminal Receipt", MessageBoxButton.OK, MessageBoxImage.Information);
 
             _onConfirmedCallback?.Invoke();
