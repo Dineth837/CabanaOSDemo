@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using CabanaOSDemo.Data;
 using CabanaOSDemo.Utils;
+using CabanaOSDemo.Views;
 
 namespace CabanaOSDemo.Views
 {
@@ -13,6 +14,7 @@ namespace CabanaOSDemo.Views
             InitializeComponent();
             this.IsVisibleChanged += ManagementDashboardView_IsVisibleChanged;
             LoadLiveManagementAnalytics();
+
         }
 
 
@@ -24,26 +26,72 @@ namespace CabanaOSDemo.Views
 
         public void LoadLiveManagementAnalytics()
         {
-            // 🚀 TEMPORARY TEST: Bypass the DB to see if bars respond to hardcoded values
-            double[] testRest = { 10000, 20000, 30000, 40000, 50000, 100000, 0, 0, 0, 0, 0, 0 };
-            double[] testSuite = { 90000, 80000, 70000, 60000, 50000, 40000, 0, 0, 0, 0, 0, 0 };
+            double totalResRev = BillingRepository.GetTotalRestaurantRevenue();
+            double totalSuiteRev = BillingRepository.GetTotalRoomRevenue();
+            double totalIncome = totalResRev+totalSuiteRev;
 
-            // Call the manual method directly
-            MonthlyBarChartCtrl.SetManualValues(testRest, testSuite);
+            
+            TxtRestaurantSalesVal.Text = $"Rs. {totalResRev:N2}";
+            TxtSuiteSalesVal.Text = $"Rs. {totalSuiteRev:N2}";
+            TxtCombinedRevenueVal.Text = $"Rs. {totalIncome:N2}";
+
+
+            
+            var history = BillingRepository.LoadAllRevenueHistory();
+
+            
+            double[] liveRest = new double[12];
+            double[] liveSuite = new double[12];
+
+            
+            foreach (var record in history)
+            {
+                
+                int monthIndex = DateTime.ParseExact(record.Month, "MMMM", System.Globalization.CultureInfo.InvariantCulture).Month - 1;
+
+                if (monthIndex >= 0 && monthIndex < 12)
+                {
+                    liveRest[monthIndex] = record.RestaurantRevenue;
+                    liveSuite[monthIndex] = record.RoomRevenue;
+                }
+            }
+
+            
+            MonthlyBarChartCtrl.SetManualValues(liveRest, liveSuite);
+
         }
 
-        // ... inside your class ...
+        
         private void SuitesPieChartCtrl_Loaded(object sender, RoutedEventArgs e)
         {
-            // If you don't need code here, leave it empty, but keep the signature!
+            
         }
 
         private void RestaurantPieChartCtrl_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            // You can leave this empty if you don't need logic here
+            
         }
 
+        private void MonthlyBarChartCtrl_Loaded(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            ReportWindow reportWindow = new ReportWindow();
+
+            
+            reportWindow.Owner = Application.Current.MainWindow;
+
+            
+            reportWindow.ShowDialog();
+        }
     }
 
 
