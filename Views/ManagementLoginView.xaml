@@ -23,7 +23,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Text="Cabana Management System" FontSize="28" FontWeight="Bold" Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                <TextBlock Grid.Row="1" Text="Management Logging" FontSize="18" FontWeight="SemiBold" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,0,0,40"/>
+                <TextBlock Grid.Row="1" Text="Management Logging 🔐" FontSize="18" FontWeight="SemiBold" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,0,0,40"/>
 
                 <Grid Grid.Row="2" HorizontalAlignment="Center" Margin="0,0,0,35">
                     <Grid.ColumnDefinitions>
