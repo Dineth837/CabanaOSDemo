@@ -64,7 +64,7 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button x:Name="BtnReleaseRoom" Content="Release Room" Background="#A7F3D0" Foreground="#065F46" Height="40" Margin="5">
+            <Button x:Name="BtnReleaseRoom" Content="Release Room" Background="#A7F3D0" Foreground="#065F46" Height="40" Margin="5" Click="BtnReleaseRoom_Click_1">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="12"/>

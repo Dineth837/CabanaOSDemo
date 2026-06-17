@@ -1,11 +1,14 @@
-﻿using System;
+﻿using CabanaOSDemo.Data;
+using CabanaOSDemo.Models;
+using CabanaOSDemo.Utils;
+using System;
+using System.Collections.ObjectModel; 
+using System.IO;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Collections.ObjectModel; // 🚀 ADDED: Required for dynamic UI lists
-using CabanaOSDemo.Data;
-using CabanaOSDemo.Models;
 
 namespace CabanaOSDemo.Views
 {
@@ -13,8 +16,8 @@ namespace CabanaOSDemo.Views
     {
         private readonly RestaurantReservationsView? _mainView;
 
-        // 🚀 ADDED: The dynamic list that talks directly to your XAML ItemsControl
-        public ObservableCollection<FoodOrderItem> CurrentOrders { get; set; }
+        //  The dynamic list that talks directly to your XAML ItemsControl
+        public ObservableCollection<FoodOrder> CurrentOrders { get; set; }
 
         public RestaurantBillSummaryView(RestaurantReservationsView? mainView, string tableName, string zone, string guestName, string totalBill = "Rs. 00.00", string orderId = "", string sourceModule = "Reservation")
         {
@@ -23,25 +26,25 @@ namespace CabanaOSDemo.Views
 
             BtnReleaseTable.Click += BtnReleaseAction_Click;
 
-            // --- 1. ALWAYS DO THIS: Setup Data and Text Fields ---
+            //  ALWAYS DO THIS: Setup Data and Text Fields 
             // (This needs to run for both Billing AND Reservation sections!)
-            CurrentOrders = new ObservableCollection<FoodOrderItem>();
+            CurrentOrders = new ObservableCollection<FoodOrder>();
             FoodOrdersList.ItemsSource = CurrentOrders;
 
             TxtTableNumber.Text = tableName;
             TxtCategoryName.Text = zone + " Zone";
             TxtCustomerName.Text = string.IsNullOrEmpty(guestName) ? "In-House Guest" : guestName;
             TxtFooterSubtitle.Text = $"{zone} Zone Table Occupied";
-            TxtTotalStatementBill.Text = totalBill ?? "Rs. 00.00";
+            TxtTotalStatementBill.Text = $"Rs {totalBill}.00";
 
-            // --- 2. CONTEXT AWARE ROUTING ENGINE ---
-            // 1. Declare routing variables strictly
+            //  CONTEXT AWARE ROUTING ENGINE
+            //  Declare routing variables strictly
             bool isBillingSection;
 
-            // 2. Assign routing values strictly
+            //  Assign routing values strictly
             isBillingSection = (sourceModule == "Billing");
 
-            // 3. Execution Guard
+            //  Execution Guard
             if (isBillingSection)
             {
                 // Triggers your exact logic tree for the Billing Section
@@ -88,13 +91,13 @@ namespace CabanaOSDemo.Views
 
         private void ApplyBillingStyle(string currentOrderId)
         {
-            // 0. Safety Guard to prevent crashes if a blank row is clicked
+            //  Safety Guard to prevent crashes if a blank row is clicked
             if (string.IsNullOrEmpty(currentOrderId))
             {
                 return;
             }
 
-            // 1. Declare all variables strictly first
+            // Declare all variables strictly first
             System.Windows.Media.BrushConverter colorTool;
             System.Windows.Media.SolidColorBrush stForeground;
             System.Windows.Media.SolidColorBrush stBackground;
@@ -106,7 +109,7 @@ namespace CabanaOSDemo.Views
             bool isDeluxeZone;
             string billingTitle;
 
-            // 2. Assign values strictly in separate steps (using '!' to prevent null warnings)
+            // Assign values strictly in separate steps (using '!' to prevent null warnings)
             colorTool = new System.Windows.Media.BrushConverter();
 
             // Standard Colors (#14532D and #BBF7D0)
@@ -124,7 +127,7 @@ namespace CabanaOSDemo.Views
             isStandardZone = currentOrderId.StartsWith("STCZ") || currentOrderId.StartsWith("STFZ");
             isDeluxeZone = currentOrderId.StartsWith("DLXCZ") || currentOrderId.StartsWith("DLXFZ");
 
-            // 3. Apply standard billing section overrides
+            // Apply standard billing section overrides
             txtHead.Text = billingTitle;
             BtnSettleBill.Visibility = visibleState;
             BtnReleaseTable.Visibility = visibleState;
@@ -157,7 +160,7 @@ namespace CabanaOSDemo.Views
             ExecuteGlobalTableRelease();
         }
 
-        // 🚀 THE FIXED LIVE SYNC SETTLE RESTAURANT BILL ENGINE
+        // THE FIXED LIVE SYNC SETTLE RESTAURANT BILL ENGINE
         private void BtnSettleBill_Click(object sender, RoutedEventArgs e)
         {
             string targetTable = TxtTableNumber.Text;
@@ -167,14 +170,64 @@ namespace CabanaOSDemo.Views
             if (activeBill != null)
             {
                 activeBill.States = "Complete";
+                activeBill.TotalBill = BillingRepository.CalculateTotalBill(activeBill.OrderID).ToString("F2");
+                double totalBillAmount = double.Parse(activeBill.TotalBill);
 
                 var assetTable = BillingRepository.MasterTables.FirstOrDefault(t => t != null && t.TableID == targetTable);
                 if (assetTable != null)
                 {
                     assetTable.States = "Complete";
+                    
+                }
+                BillingRepository.CompleteFoodOrder(activeBill.OrderID);
+                BillingRepository.UpdateRestaurantRevenue(totalBillAmount);
+                BillingRepository.SaveAllDataToFiles();
+
+                string baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string folderPath = Path.Combine(baseFolder, "CabanaOS", "Restaurant Invoices");
+                // 3. Ensure the folder exists
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+                // 4. Construct unique file name
+                string fileName = $"{getOrderID()}_{DateTime.Now:yyyyMMddHHmmss}.pdf";
+                string fullPath = Path.Combine(folderPath, fileName);
+                // 5. Generate PDF
+                try
+                {
+                    PdfInvoiceService.GenerateRestaurantInvoice(
+                        filePath: fullPath,
+                        orderNumber: $"{getOrderID()}",
+                        roomNumber: "00",
+                        orderLines: new string[] { "Item 1 - Rs. 100.00", "Item 2 - Rs. 200.00" },
+                        invoiceDate: DateTime.Now.ToString("yyyy-MM-dd"),
+                        totalDue: TxtTotalStatementBill.Text
+                    );
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to generate invoice: {ex.Message}");
+                    return; // Exit if generation fails
                 }
 
-                BillingRepository.SaveAllDataToFiles();
+                if (_mainView != null)
+                {
+                    _mainView.ReleaseTableRealTime(targetTable);
+                }
+                else
+                {
+                    var appShell = Application.Current.MainWindow as HomePageShell;
+                    if (appShell != null)
+                    {
+                        var activeRestTab = appShell.GetPersistentRestaurantView();
+                        if (activeRestTab != null)
+                        {
+                            activeRestTab.ReleaseTableRealTime(targetTable);
+                        }
+                    }
+                }
+
                 ExecuteGlobalTableRelease();
 
                 MessageBox.Show($"Table {targetTable} Bill Settled Successfully!\n\n" +
@@ -210,6 +263,19 @@ namespace CabanaOSDemo.Views
                         activeRestTab.ReleaseTableRealTime(targetTable);
                     }
                 }
+            }
+        }
+
+        public string getOrderID()
+        {
+            var invoice = BillingRepository.RestaurantInvoices.FirstOrDefault(r => r != null && r.TableNumber == TxtTableNumber.Text && r.States == "Ongoing");
+            if (invoice != null)
+            {
+                return invoice.OrderID;
+            }
+            else
+            {
+                return "N/A";
             }
         }
     }

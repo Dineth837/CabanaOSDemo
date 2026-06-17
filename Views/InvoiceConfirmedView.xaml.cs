@@ -1,5 +1,7 @@
 ﻿using CabanaOSDemo.Data;
+using CabanaOSDemo.Utils;
 using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,16 +14,19 @@ namespace CabanaOSDemo.Views
         private readonly RoomsAccommodationsView? _mainView;
         private readonly string _roomNumber;
         private readonly string _tier;
+        private readonly string _GuestName;
 
-        public InvoiceConfirmedView(RoomsAccommodationsView mainView, string roomNumber, string tier)
+        public InvoiceConfirmedView(RoomsAccommodationsView mainView, string roomNumber, string tier, string GuestName)
         {
             InitializeComponent();
             _mainView = mainView;
             _roomNumber = roomNumber;
             _tier = tier;
+            _GuestName=GuestName;
 
             // Initialize visual states
             TxtInvoiceRoomNumber.Text = roomNumber;
+            TxtCusName.Text = GuestName;
             ApplyTierInvoiceTheme(tier);
         }
 
@@ -30,13 +35,14 @@ namespace CabanaOSDemo.Views
             if (tier == "Superior")
             {
                 // Matches layout: whenConfirmedSuperiorCoupleSuite.png
+                
 
                 TxtSuiteBookedLabel.Text = "Superior Suite Booked";
                 TxtInvoiceCategory.Text = "Superior Suite";
                 TxtAccommodationCharge.Text = "Rs. 12,500.00";
                 TxtTotalStatementDue.Text = "Rs. 12,500.00";
 
-                // Soft Blue Theme Tints
+                
                 SolidColorBrush supBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E8F0FE"));
                 SolidColorBrush supButtonBg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ADC4F7"));
                 SolidColorBrush supButtonFg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E3A8A"));
@@ -68,7 +74,7 @@ namespace CabanaOSDemo.Views
                 TxtAccommodationCharge.Text = "Rs. 20,000.00";
                 TxtTotalStatementDue.Text = "Rs. 20,000.00";
 
-                // Premium Warm Beige Theme Tints
+                
                 SolidColorBrush dlxBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF4E8"));
                 SolidColorBrush dlxButtonBg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FCE8CE"));
                 SolidColorBrush dlxButtonFg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78350F"));
@@ -92,12 +98,21 @@ namespace CabanaOSDemo.Views
                 TxtInvoiceTitle.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78350F"));
                 TxtTotalStatementDue.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#78350F"));
             }
-            else // Standard Fallback Default Mode
+            else 
             {
                 TxtSuiteBookedLabel.Text = "Standard Suite Booked";
                 TxtInvoiceCategory.Text = "Standard Suite";
-                TxtAccommodationCharge.Text = "Rs. 8,500.00";
-                TxtTotalStatementDue.Text = "Rs. 8,500.00";
+                if (_roomNumber.Contains("Fam"))
+                {
+                    TxtTotalStatementDue.Text = "Rs. 15,000.00";
+                    TxtAccommodationCharge.Text = "Rs. 15,000.00";
+                }
+                else
+                {
+                    TxtTotalStatementDue.Text = "Rs. 8,500.00";
+                    TxtAccommodationCharge.Text = "Rs. 8,500.00";
+                }
+                
 
                 // Original Green Accent Styles
                 SolidColorBrush stdBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F0FDF4"));
@@ -124,7 +139,7 @@ namespace CabanaOSDemo.Views
             }
         }
 
-        // 🚀 FIX 2: Added the missing click handler your XAML action button is searching for!
+        //  Added the missing click handler your XAML action button is searching for
         private void BtnSettleDue_Click(object sender, RoutedEventArgs e)
         {
             string targetRoom = _roomNumber;
@@ -141,22 +156,52 @@ namespace CabanaOSDemo.Views
             BillingRepository.SaveAllDataToFiles(); // Ensure persistence
 
             // Trigger global refresh
-            ExecuteGlobalRoomRelease();
+            BillingRepository.UpdateRoomRevenue(double.Parse(totalDue.Replace("Rs. ", "").Replace(",", "")));
+
+            string baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string folderPath = Path.Combine(baseFolder, "CabanaOS", "Suite Invoices");
+
+            // 3. Ensure the folder exists
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // 4. Construct unique file name
+            string fileName = $"{getBookingID()}_{DateTime.Now:yyyyMMddHHmmss}.pdf";
+            string fullPath = Path.Combine(folderPath, fileName);
+
+            // 5. Generate PDF
+            try
+            {
+                PdfInvoiceService.GenerateSuitesInvoice(
+                    filePath: fullPath,
+                    bookingNumber: $"{getBookingID()}",
+                    roomNumber: _roomNumber,
+                    suiteCharge: totalDue,
+                    exCharge: "Rs. 0.00",
+                    invoiceDate: DateTime.Now.ToString("yyyy-MM-dd"),
+                    totalCharge: totalDue
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to generate invoice: {ex.Message}");
+                return; // Exit if generation fails
+            }
+
 
             MessageBox.Show($"Suite No {targetRoom} Bill Settled Successfully!\n\n" +
                             $"The statement sum {totalDue} has been transferred to Today's Suite Sales Ledger.\n" +
                             $"Room visual card state refreshed instantly to Available.",
                             "POS Terminal Checkout Counter", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
 
-        // 2. RELEASE ROOM: Mirroring Restaurant "ReleaseTableAction"
-        private void BtnReleaseRoom_Click(object sender, RoutedEventArgs e)
-        {
             ExecuteGlobalRoomRelease();
-            MessageBox.Show($"Room {_roomNumber} returned to vacant pool.", "System Success");
+
+            var appShell = Application.Current.MainWindow as HomePageShell;
+            appShell?.GetPersistentRoomsView()?.RefreshActiveRoomsMatrixGrid();
         }
 
-        // 3. THE FIXED SYNC ENGINE: Matches your Restaurant "ExecuteGlobalTableRelease"
         private void ExecuteGlobalRoomRelease()
         {
             // Update repository
@@ -178,5 +223,31 @@ namespace CabanaOSDemo.Views
             }
         }
 
+        private void BtnReleaseRoom_Click_1(object sender, RoutedEventArgs e)
+        {
+            //ExecuteGlobalRoomRelease();
+            //MessageBox.Show($"Room {_roomNumber} returned to vacant pool.", "System Success");
+            string targetRoom = _roomNumber;
+            BillingRepository.UpdateSuiteStatus(targetRoom, "CheckedOut");
+            MessageBox.Show($"Suite No {targetRoom} Bill Released Successfully!", "POS Terminal Checkout Counter", MessageBoxButton.OK, MessageBoxImage.Information);
+            
+            ExecuteGlobalRoomRelease();
+
+            var appShell = Application.Current.MainWindow as HomePageShell;
+            appShell?.GetPersistentRoomsView()?.RefreshActiveRoomsMatrixGrid();
+        }
+
+        public string getBookingID()
+        {
+            var invoice = BillingRepository.RoomInvoices.FirstOrDefault(r => r != null && r.RoomNumber == _roomNumber && r.States == "CheckedIn");
+            if (invoice != null)
+            {
+                return invoice.BookingID;
+            }
+            else
+            {
+                return "N/A";
+            }
+        }
     }
 }

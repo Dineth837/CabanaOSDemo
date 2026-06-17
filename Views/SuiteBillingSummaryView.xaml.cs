@@ -1,4 +1,7 @@
 ﻿using CabanaOSDemo.Data;
+using CabanaOSDemo.Utils;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -17,6 +20,7 @@ namespace CabanaOSDemo.Views
             InitializeComponent();
             _onActionCompleted = onActionCompleted ?? (() => { });
             _roomNumber = roomNumber ?? "N/A";
+            string totaldue = totalDue ?? "Rs. 00.00";
 
             TxtRoomNumber.Text = _roomNumber;
             TxtCategory.Text = category ?? "Standard Suite";
@@ -27,8 +31,43 @@ namespace CabanaOSDemo.Views
         }
 
         private void BtnSettleDue_Click(object sender, RoutedEventArgs e)
-        {
+        {   
+            double totaldue = TxtTotalDue.Text.Replace("Rs. ", "").Trim() == "" ? 0 : double.Parse(TxtTotalDue.Text.Replace("Rs. ", "").Trim());
             // Perform only the data update
+            BillingRepository.UpdateRoomRevenue(totaldue);
+
+            string baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string folderPath = Path.Combine(baseFolder, "CabanaOS", "Suite Invoices");
+
+            // 3. Ensure the folder exists
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // 4. Construct unique file name
+            string fileName = $"{getBookingID()}_{DateTime.Now:yyyyMMddHHmmss}.pdf";
+            string fullPath = Path.Combine(folderPath, fileName);
+
+            // 5. Generate PDF
+            try
+            {
+                PdfInvoiceService.GenerateSuitesInvoice(
+                    filePath: fullPath,
+                    bookingNumber: $"{getBookingID()}",
+                    roomNumber: _roomNumber,
+                    suiteCharge: TxtBaseCharge.Text,
+                    exCharge: "Rs. 0.00",
+                    invoiceDate: DateTime.Now.ToString("yyyy-MM-dd"),
+                    totalCharge: TxtTotalDue.Text
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to generate invoice: {ex.Message}");
+                return; // Exit if generation fails
+            }
+
             ExecuteGlobalRoomRelease();
 
             // Show the success message (this is okay)
@@ -71,6 +110,19 @@ namespace CabanaOSDemo.Views
             // 4. Force a UI refresh for the Room Card grid
             var appShell = Application.Current.MainWindow as HomePageShell;
             appShell?.GetPersistentRoomsView()?.RefreshActiveRoomsMatrixGrid();
+        }
+
+        public string getBookingID()
+        {
+            var invoice = BillingRepository.RoomInvoices.FirstOrDefault(r => r != null && r.RoomNumber == _roomNumber && r.States == "CheckedIn");
+            if (invoice != null)
+            {
+                return invoice.BookingID;
+            }
+            else
+            {
+                return "N/A";
+            }
         }
     }
 
