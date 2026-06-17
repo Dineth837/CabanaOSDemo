@@ -22,7 +22,7 @@ namespace CabanaOSDemo.Views
           
         }
 
-        // 🚀 THE NEW SOURCE OF TRUTH: Direct lookup to database/memory
+        
         // This removes the need for the dangerous RoomStatusTracker dictionary
         private bool IsRoomReserved(string roomId)
         {
@@ -30,14 +30,18 @@ namespace CabanaOSDemo.Views
             return suite != null && suite.States == "CheckedIn";
         }
 
+        public string getCustomerName(string roomId)
+        {
+            var suite = BillingRepository.RoomInvoices.FirstOrDefault(s => s != null && s.RoomNumber == roomId);
+            return suite?.CustomerName ?? string.Empty;
+        }
+
         public void ReleaseRoomRealTime(string roomNumber)
         {
-            // 1. Refresh the grid immediately
+            //  Refresh the grid immediately
             RefreshActiveRoomsMatrixGrid();
 
-            // 2. Use a "Dispatcher.Invoke" to clear the workspace. 
-            // This delay ensures the UI thread is not busy rendering the grid 
-            // when the workspace is cleared.
+            
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 DynamicFormWorkspace.Content = null;
@@ -60,9 +64,9 @@ namespace CabanaOSDemo.Views
 
                 BillingRepository.UpdateSuiteStatus(roomNumber, "CheckedIn");
                 RefreshActiveRoomsMatrixGrid();
-                DynamicFormWorkspace.Content = new InvoiceConfirmedView(this,roomNumber, tier);
+                DynamicFormWorkspace.Content = new InvoiceConfirmedView(this,roomNumber, tier, getCustomerName(roomNumber));
             };
-            
+
             if (roomNumber.Contains("Fam"))
                 DynamicFormWorkspace.Content = new FormFamilyView(onRegistrationSuccessCallback, roomNumber, tier);
             else
@@ -192,7 +196,10 @@ namespace CabanaOSDemo.Views
             mainStack.Children.Add(new TextBlock { Text = price, FontSize = 12, Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#475569")), FontWeight = FontWeights.Medium });
             cardBtn.Content = mainStack;
 
-            cardBtn.Click += (sender, e) => { if (isReserved) DynamicFormWorkspace.Content = new InvoiceConfirmedView(this,roomName, tierMode); else LoadCleanFormWorkspace(roomName, tierMode); };
+            cardBtn.Click += (sender, e) => { 
+                if (isReserved) 
+                    DynamicFormWorkspace.Content = new InvoiceConfirmedView(this,roomName, tierMode, getCustomerName(roomName)); else LoadCleanFormWorkspace(roomName, tierMode); 
+            };
             return cardBtn;
         }
 

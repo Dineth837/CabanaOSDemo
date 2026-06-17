@@ -29,6 +29,12 @@ namespace CabanaOSDemo.Views
             return table != null && table.States == "Ongoing";
         }
 
+        public string getCustomerName(string tableId)
+        {
+            var suite = BillingRepository.RestaurantInvoices.FirstOrDefault(s => s != null && s.TableNumber == tableId);
+            return suite?.CustomerName ?? string.Empty;
+        }
+
         private void ZoneFilterButton_Click(object sender, RoutedEventArgs e)
         {
             Button clickedButton = sender as Button;
@@ -162,6 +168,8 @@ namespace CabanaOSDemo.Views
             GridFloorLayoutContentArea.Children.Add(deluxeVerticalStack);
         }
 
+        
+
         private Button CreateGeometricTableComponent(string name, string seating, bool isOccupied, bool isCircle, string zone)
         {
             string bgHex = zone == "Deluxe" ? "#FFF4E8" : "#F0FDF4";
@@ -209,7 +217,7 @@ namespace CabanaOSDemo.Views
 
                 if (isOccupied)
                 {
-                    DynamicReservationWorkspace.Content = new RestaurantBillSummaryView(this, name, zone, "In-House Resident Guest", priceLabel);
+                    DynamicReservationWorkspace.Content = new RestaurantBillSummaryView(this, name, zone, getCustomerName(name), priceLabel);
                 }
                 else
                 {
