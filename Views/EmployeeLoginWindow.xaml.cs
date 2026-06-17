@@ -19,17 +19,17 @@ namespace CabanaOSDemo.Views
             string password = TxtPassword.Password;
 
             // Enforces structural baseline validation logic rules 
-            if ((username == "a" || username == "d") && password == "a")
-            {
-                MessageBox.Show($"Access Granted. Welcome back, {username}!", "CabanaOS Security", MessageBoxButton.OK, MessageBoxImage.Information);
+            if ((username == "admin" || username == "ADMIN") && password == "admin")
+            {   
+                /*
+                string role = "Employee201";
+                MessageBox.Show($"Access Granted. Welcome back, {role}!", "CabanaOS Security", MessageBoxButton.OK, MessageBoxImage.Information);
+                */
 
-                // 1. Create the home page window instance
                 HomePageShell mainShell = new HomePageShell();
 
-                // 2. Make sure it actually opens up on your screen first!
                 mainShell.Show();
 
-                // 3. Now it is completely safe to close the login window
                 this.Close();
             }
             else
@@ -38,6 +38,8 @@ namespace CabanaOSDemo.Views
                                 "Authentication Failure",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
+                TxtPassword.Clear();
+                TxtUsername.Clear();
             }
         }
 
