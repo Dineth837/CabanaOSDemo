@@ -1,11 +1,12 @@
-﻿using System;
+﻿using CabanaOSDemo.Data;
+using CabanaOSDemo.Models;
+using CabanaOSDemo.Utils;
+using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using CabanaOSDemo.Data;
-using CabanaOSDemo.Models;
-using CabanaOSDemo.Utils;
 
 namespace CabanaOSDemo.Views
 {
@@ -57,7 +58,6 @@ namespace CabanaOSDemo.Views
             string leadGuestNic;
             string guestCount;
             string parsedTier;
-            string generatedId;
 
             // 2. Assign initial values from UI
             roomNumStr = TxtRoomNumberDisplayBox.Text.Trim();
@@ -107,6 +107,34 @@ namespace CabanaOSDemo.Views
             newRecord.States = "CheckedIn";
             newRecord.TotalDue = TxtCostPerNight.Text;
             newRecord.BookingID = bookingID;
+
+            //Generate Access Card PDF
+
+            var cardData = new AccessCardData
+            {
+                BookingNumber = bookingID,
+                GuestName = leadName,
+                GuestNIC = leadNic,
+                Date = DateTime.Today.ToString("yyyy.MM.dd"),
+                TotalDue = TxtCostPerNight.Text,
+            };
+
+            // 1. Get the path to the user's "Documents" folder
+            string docsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string folderPath = Path.Combine(docsPath, "CabanaOS", "Room Access Card");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string fileName = $"{cardData.BookingNumber}.pdf";
+            string fullPath = Path.Combine(folderPath, fileName);
+
+            AccessCardGenerator.SaveCard(cardData, fullPath);
+
+            //System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(fullPath) { UseShellExecute = true });
+
+
 
             // 7. Save to C# Memory Repository
             BillingRepository.RoomInvoices.Add(newRecord);
