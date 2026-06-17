@@ -34,11 +34,11 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="100,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="80,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="60,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
-            <TextBlock Grid.Column="0" Grid.Row="3" Text="40,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
-            <TextBlock Grid.Column="0" Grid.Row="4" Text="20,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="500,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="400,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="300,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="200,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="100,000" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-6,10,0"/>
             <TextBlock Grid.Column="0" Grid.Row="4" Text="0" FontSize="10" Foreground="#94A3B8" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,-6"/>
 
             <Border Grid.Column="1" Grid.Row="0" BorderBrush="#F1F5F9" BorderThickness="0,1,0,0" VerticalAlignment="Top"/>
@@ -100,7 +100,7 @@
             </UniformGrid>
         </Grid>
 
-        <UniformGrid Grid.Row="2" Columns="12" Margin="50,8,10,0">
+        <UniformGrid Grid.Row="2" Columns="12" Margin="95,0,10,0">
             <TextBlock Text="Jan" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center"/>
             <TextBlock Text="Feb" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center"/>
             <TextBlock Text="Mar" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center"/>

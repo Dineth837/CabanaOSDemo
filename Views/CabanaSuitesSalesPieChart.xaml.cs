@@ -13,16 +13,15 @@ namespace CabanaOSDemo.Views
         public CabanaSuitesSalesPieChart()
         {
             InitializeComponent();
+            
         }
 
-        /// <summary>
-        /// Updates the percentage labels and redraws the vector paths dynamically based on file data.
-        /// </summary>
+        
         public void UpdateData(double stdCouple, double stdFamily, double superior, double deluxe)
         {
             double total = stdCouple + stdFamily + superior + deluxe;
 
-            // Update Text Overlays (Percentages) Safely
+            
             var textBlocks = FindVisualChildren<TextBlock>(this).Where(tb => tb.Text.Contains("%")).ToArray();
             if (textBlocks.Length >= 4)
             {
@@ -32,13 +31,13 @@ namespace CabanaOSDemo.Views
                 textBlocks[3].Text = total > 0 ? $"{(deluxe / total * 100):0}%" : "0%";
             }
 
-            // Fallback safety shield to prevent empty chart calculations
+            
             if (total == 0) { stdCouple = 1; stdFamily = 1; superior = 1; deluxe = 1; total = 4; }
 
             double[] values = { stdCouple, stdFamily, superior, deluxe };
             var chartPaths = FindVisualChildren<Path>(this).Where(p => p.Fill is SolidColorBrush).ToArray();
 
-            // Redraw the actual geometric slices cleanly
+            
             DrawPieChart(chartPaths, values, total);
         }
 
@@ -48,12 +47,12 @@ namespace CabanaOSDemo.Views
 
             double startAngle = 0;
             double radius = 80;
-            Point center = new Point(100, 100); // Absolute center coordinates of your canvas
+            Point center = new Point(100, 100); 
 
             for (int i = 0; i < Math.Min(paths.Length, values.Length); i++)
             {
                 double share = values[i] / total;
-                if (share >= 1.0) share = 0.9999; // Prevents full-circle mathematical drawing errors
+                if (share >= 1.0) share = 0.9999; 
 
                 double endAngle = startAngle + (share * 360);
 
@@ -65,7 +64,7 @@ namespace CabanaOSDemo.Views
 
                 bool isLargeArc = (endAngle - startAngle) > 180;
 
-                // Construct a brand new, valid WPF PathGeometry block to prevent shape loss
+                
                 PathGeometry geom = new PathGeometry();
                 PathFigure fig = new PathFigure { StartPoint = center, IsClosed = true };
 
@@ -73,13 +72,13 @@ namespace CabanaOSDemo.Views
                 fig.Segments.Add(new ArcSegment(p2, new Size(radius, radius), 0, isLargeArc, SweepDirection.Clockwise, true));
 
                 geom.Figures.Add(fig);
-                paths[i].Data = geom; // Overwrites the old hardcoded XAML coordinates with dynamic data numbers
+                paths[i].Data = geom; 
 
                 startAngle = endAngle;
             }
         }
 
-        // 🚀 FIXED: Appended '?' to parameter to clear null reference analysis warnings entirely
+        
         private IEnumerable<T> FindVisualChildren<T>(DependencyObject? depObj) where T : DependencyObject
         {
             if (depObj != null)

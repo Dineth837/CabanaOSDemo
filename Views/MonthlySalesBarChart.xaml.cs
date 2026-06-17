@@ -6,11 +6,12 @@ namespace CabanaOSDemo.Views
     public partial class MonthlySalesBarChart : UserControl
     {
         private const double MaxPixelHeight = 150.0;
-        private const double RevenueCeilingLimit = 100000.0;
+        private const double RevenueCeilingLimit = 500000.0;
 
         public MonthlySalesBarChart()
         {
             InitializeComponent();
+            SetupBarInteractivity();
         }
 
         // 🚀 TEST MODE: Force the chart to show manual values for debugging
@@ -51,11 +52,61 @@ namespace CabanaOSDemo.Views
 
         private double CalculateRelativeHeight(double rawRevenue)
         {
-            // TEMPORARY: Return 20 pixels so we can see if the bars actually render
-            if (rawRevenue <= 0) return 0;
+            // 1. Fixed constraints as requested
+            const double MaxPixelHeight = 150.0;
+            const double RevenueCeilingLimit = 500000.0; // The fixed cap
 
-            double calculatedHeight = (rawRevenue / RevenueCeilingLimit) * MaxPixelHeight;
-            return Math.Max(20.0, Math.Min(MaxPixelHeight, calculatedHeight)); // Clamp between 20 and 150
+            // 2. Handle cases where revenue exceeds the cap (ensure it doesn't break UI)
+            double effectiveRevenue = Math.Min(rawRevenue, RevenueCeilingLimit);
+
+            // 3. Handle zero or negative revenue
+            if (effectiveRevenue <= 0) return 0;
+
+            // 4. Calculate relative height (0.0 to 1.0 ratio * max height)
+            double calculatedHeight = (effectiveRevenue / RevenueCeilingLimit) * MaxPixelHeight;
+
+            // 5. Ensure a minimum height for visibility if revenue > 0
+            return Math.Max(5.0, calculatedHeight);
+        }
+
+
+        private void SetupBarInteractivity()
+        {
+            // List of all your bars
+            var allBars = new[] {
+            BarJanRest, BarJanSuite, BarFebRest, BarFebSuite,BarFebSuite, BarFebSuite, BarMarRest, BarMarSuite, 
+            BarAprRest, BarAprSuite, BarMayRest, BarMaySuite, BarJunRest, BarJunSuite, BarJulRest, BarJulSuite, 
+            BarAugRest, BarAugSuite, BarSepRest, BarSepSuite, BarOctRest, BarOctSuite, BarNovRest, BarNovSuite, 
+            BarDecRest, BarDecSuite};
+
+            foreach (var bar in allBars)
+            {
+                if (bar == null) continue;
+
+                // 1. Add ToolTip
+                string revenueType = bar.Name.Contains("Rest") ? "Restaurant" : "Suites";
+                bar.ToolTip = $"{bar.Name.Substring(3, 3)} {revenueType} Revenue";
+
+                // 2. Add Hover Effects
+               
+                //bar.MouseEnter += Bar_MouseEnter;
+                //bar.MouseLeave += Bar_MouseLeave;
+            }
+        }
+
+
+        private void Bar_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var bar = (System.Windows.Controls.Border)sender;
+            bar.Opacity = 0.7; // Lighten/Blur effect
+            bar.Effect = new System.Windows.Media.Effects.DropShadowEffect { BlurRadius = 10, ShadowDepth = 0 };
+        }
+
+        private void Bar_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var bar = (System.Windows.Controls.Border)sender;
+            bar.Opacity = 1.0;
+            bar.Effect = null;
         }
     }
 }
