@@ -1,8 +1,10 @@
 ﻿namespace CabanaOSDemo.Models
 {
-    public class FoodOrderItem
+    public class FoodOrder
     {
-        public string ItemName { get; set; }
-        public string ItemPrice { get; set; }
+        public string OrderID { get; set; } = string.Empty;
+        public string ItemName { get; set; } = string.Empty;
+        public double Price { get; set; }   = 0.0;
+        public int Quantity { get; set; }   = 0;
     }
 }
