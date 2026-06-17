@@ -44,6 +44,9 @@
     <Compile Update="Views\MonthlySalesBarChart.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\ReportWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\RestaurantBillSummaryView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
