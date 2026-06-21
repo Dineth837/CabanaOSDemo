@@ -1,0 +1,8 @@
+Fam ST08|Customer Name|Standard Suite|2026.05.24|CheckedOut|Rs. 15,000.00
+RM 202|Nimal Silva|Superior Suite|2026.05.24|CheckedOut|Rs. 25,000.00
+RM 301|S. Jayawardena|Deluxe Suite|2026.05.24|CheckedOut|Rs. 40,000.00
+ST03|Dineth Tharusha|Standard Suite|2026.05.28|CheckedOut|Rs. 8,500.00
+ST01|Live Guest Entry|Standard Suite|2026.05.28|CheckedOut|Rs. 8,500.00
+Fam ST08|Dineth Tharusha|Standard Family Suite|2026.05.29|CheckedOut|Rs. 15,000.00
+ST06|dineth|Standard Suite|2026.05.29|CheckedIn|Rs. 8,500.00
+Fam ST010|odzz|Standard Family Suite|2026.05.31|CheckedOut|Rs. 15,000.00

@@ -24,7 +24,7 @@
                         </Style>
                     </Button.Resources>
                 </Button>
-                <Button Content="Manage Users" Background="#D6E6E2" Foreground="#475569" FontWeight="Bold" FontSize="12" Padding="20,10" Click="Button_Click">
+                <Button Content="Manager" Background="#D6E6E2" Foreground="#475569" FontWeight="Bold" FontSize="12" Padding="20,10" Click="Button_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="14"/>
